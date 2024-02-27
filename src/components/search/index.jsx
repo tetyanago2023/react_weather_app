@@ -1,4 +1,3 @@
-
 const Search = ({search, setSearch, handleSearch}) => {
 
     return (
