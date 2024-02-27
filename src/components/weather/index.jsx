@@ -1,5 +1,5 @@
 import Search from "../search";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 
 const Weather = () => {
     const [search, setSearch] = useState("");
@@ -12,10 +12,10 @@ const Weather = () => {
             const response = await fetch(
                 `https://api.openweathermap.org/data/2.5/weather?q=${param}&appid=1c1de40153423aaa0bc39f72145a849c`
             );
-
             const data = await response.json();
+            console.log(data, "data");
             if (data) {
-                setWeatherData(data);
+                setWeatherData(data,);
                 setLoading(false);
             }
         } catch (e) {
@@ -24,12 +24,24 @@ const Weather = () => {
         }
     }
 
-    async function handleSearch() {
-        const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${search}&appid=YOUR_API_KEY`);
-        const data = await response.json();
-        console.log(data);
-
+    const handleSearch = () => {
+        fetchWeatherData(search);
     }
+
+    const getCurrentDate = () => {
+        return new Date().toLocaleDateString("en-us", {
+            weekday: "long",
+            month: "long",
+            day: "numeric",
+            year: "numeric",
+        });
+    }
+
+    useEffect(() => {
+        fetchWeatherData("London");
+    }, []);
+
+    console.log(weatherData, "weatherData");
 
     return (
         <div>
@@ -38,7 +50,17 @@ const Weather = () => {
                 setSearch={setSearch}
                 handleSearch={handleSearch}
             />
-            <h2>Weather</h2>
+            {loading ? <p>Loading...</p>
+                : <div>
+                    <div className="city-name">
+                        <h2>
+                            {weatherData?.name}, <span>{weatherData?.sys?.country}</span>
+                        </h2>
+                    </div>
+                    <div className="date">
+                        <span>{getCurrentDate()}</span>
+                    </div>
+                </div>}
 
         </div>
     );
