@@ -1,8 +1,12 @@
+import Search from "../search";
+
 const Weather = () => {
 
     return (
         <div>
-        <h1>Weather</h1>
+            <Search />
+            <h2>Weather</h2>
+
         </div>
     );
 };
